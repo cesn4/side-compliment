@@ -18,3 +18,10 @@ model User {
   updatedAt DateTime @updatedAt
   username  String   @unique
 }
+
+model Booking {
+  createdAt DateTime @default(now())
+  id        String   @id @default(cuid())
+  tItle     String
+  updatedAt DateTime @updatedAt
+}
