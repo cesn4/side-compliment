@@ -22,6 +22,9 @@ import { User } from "./User";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserUpdateInput } from "./UserUpdateInput";
+import { BookingFindManyArgs } from "../../booking/base/BookingFindManyArgs";
+import { Booking } from "../../booking/base/Booking";
+import { BookingWhereUniqueInput } from "../../booking/base/BookingWhereUniqueInput";
 
 export class UserControllerBase {
   constructor(protected readonly service: UserService) {}
@@ -150,5 +153,86 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.Get("/:id/bookings")
+  @ApiNestedQuery(BookingFindManyArgs)
+  async findBookings(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Booking[]> {
+    const query = plainToClass(BookingFindManyArgs, request.query);
+    const results = await this.service.findBookings(params.id, {
+      ...query,
+      select: {
+        createdAt: true,
+        id: true,
+        tItle: true,
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/bookings")
+  async connectBookings(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: BookingWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      bookings: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/bookings")
+  async updateBookings(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: BookingWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      bookings: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/bookings")
+  async disconnectBookings(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: BookingWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      bookings: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

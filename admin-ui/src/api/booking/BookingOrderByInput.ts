@@ -5,4 +5,5 @@ export type BookingOrderByInput = {
   id?: SortOrder;
   tItle?: SortOrder;
   updatedAt?: SortOrder;
+  userId?: SortOrder;
 };
