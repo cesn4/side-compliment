@@ -13,6 +13,7 @@ import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { IsDate, IsString, ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
+import { Room } from "../../room/base/Room";
 import { User } from "../../user/base/User";
 
 @ObjectType()
@@ -32,6 +33,15 @@ class Booking {
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    type: () => Room,
+  })
+  @ValidateNested()
+  @Type(() => Room)
+  @IsOptional()
+  room?: Room | null;
 
   @ApiProperty({
     required: true,

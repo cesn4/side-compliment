@@ -1,5 +1,6 @@
 import { Booking } from "../booking/Booking";
 import { JsonValue } from "type-fest";
+import { Room } from "../room/Room";
 
 export type User = {
   bookings?: Array<Booking>;
@@ -9,6 +10,7 @@ export type User = {
   id: string;
   lastName: string | null;
   roles: JsonValue;
+  rooms?: Array<Room>;
   updatedAt: Date;
   username: string;
 };

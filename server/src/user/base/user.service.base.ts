@@ -14,6 +14,7 @@ import {
   Prisma,
   User as PrismaUser,
   Booking as PrismaBooking,
+  Room as PrismaRoom,
 } from "@prisma/client";
 
 export class UserServiceBase {
@@ -58,5 +59,16 @@ export class UserServiceBase {
         where: { id: parentId },
       })
       .bookings(args);
+  }
+
+  async findRooms(
+    parentId: string,
+    args: Prisma.RoomFindManyArgs
+  ): Promise<PrismaRoom[]> {
+    return this.prisma.user
+      .findUniqueOrThrow({
+        where: { id: parentId },
+      })
+      .rooms(args);
   }
 }

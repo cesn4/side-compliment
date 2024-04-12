@@ -13,6 +13,14 @@ import { BookingList } from "./booking/BookingList";
 import { BookingCreate } from "./booking/BookingCreate";
 import { BookingEdit } from "./booking/BookingEdit";
 import { BookingShow } from "./booking/BookingShow";
+import { BuildingList } from "./building/BuildingList";
+import { BuildingCreate } from "./building/BuildingCreate";
+import { BuildingEdit } from "./building/BuildingEdit";
+import { BuildingShow } from "./building/BuildingShow";
+import { RoomList } from "./room/RoomList";
+import { RoomCreate } from "./room/RoomCreate";
+import { RoomEdit } from "./room/RoomEdit";
+import { RoomShow } from "./room/RoomShow";
 import { jwtAuthProvider } from "./auth-provider/ra-auth-jwt";
 
 const App = (): React.ReactElement => {
@@ -52,6 +60,20 @@ const App = (): React.ReactElement => {
           edit={BookingEdit}
           create={BookingCreate}
           show={BookingShow}
+        />
+        <Resource
+          name="Building"
+          list={BuildingList}
+          edit={BuildingEdit}
+          create={BuildingCreate}
+          show={BuildingShow}
+        />
+        <Resource
+          name="Room"
+          list={RoomList}
+          edit={RoomEdit}
+          create={RoomCreate}
+          show={RoomShow}
         />
       </Admin>
     </div>

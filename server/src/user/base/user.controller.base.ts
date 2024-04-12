@@ -25,6 +25,9 @@ import { UserUpdateInput } from "./UserUpdateInput";
 import { BookingFindManyArgs } from "../../booking/base/BookingFindManyArgs";
 import { Booking } from "../../booking/base/Booking";
 import { BookingWhereUniqueInput } from "../../booking/base/BookingWhereUniqueInput";
+import { RoomFindManyArgs } from "../../room/base/RoomFindManyArgs";
+import { Room } from "../../room/base/Room";
+import { RoomWhereUniqueInput } from "../../room/base/RoomWhereUniqueInput";
 
 export class UserControllerBase {
   constructor(protected readonly service: UserService) {}
@@ -167,6 +170,13 @@ export class UserControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        room: {
+          select: {
+            id: true,
+          },
+        },
+
         tItle: true,
         updatedAt: true,
 
@@ -226,6 +236,93 @@ export class UserControllerBase {
   ): Promise<void> {
     const data = {
       bookings: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Get("/:id/rooms")
+  @ApiNestedQuery(RoomFindManyArgs)
+  async findRooms(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Room[]> {
+    const query = plainToClass(RoomFindManyArgs, request.query);
+    const results = await this.service.findRooms(params.id, {
+      ...query,
+      select: {
+        building: {
+          select: {
+            id: true,
+          },
+        },
+
+        createdAt: true,
+        id: true,
+        title: true,
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/rooms")
+  async connectRooms(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: RoomWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      rooms: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/rooms")
+  async updateRooms(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: RoomWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      rooms: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/rooms")
+  async disconnectRooms(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: RoomWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      rooms: {
         disconnect: body,
       },
     };

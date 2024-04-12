@@ -13,6 +13,7 @@ import { PrismaService } from "../../prisma/prisma.service";
 import {
   Prisma,
   Booking as PrismaBooking,
+  Room as PrismaRoom,
   User as PrismaUser,
 } from "@prisma/client";
 
@@ -47,6 +48,14 @@ export class BookingServiceBase {
     args: Prisma.SelectSubset<T, Prisma.BookingDeleteArgs>
   ): Promise<PrismaBooking> {
     return this.prisma.booking.delete(args);
+  }
+
+  async getRoom(parentId: string): Promise<PrismaRoom | null> {
+    return this.prisma.booking
+      .findUnique({
+        where: { id: parentId },
+      })
+      .room();
   }
 
   async getUser(parentId: string): Promise<PrismaUser | null> {

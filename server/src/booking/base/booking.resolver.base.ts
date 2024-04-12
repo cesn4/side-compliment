@@ -20,6 +20,7 @@ import { BookingFindUniqueArgs } from "./BookingFindUniqueArgs";
 import { CreateBookingArgs } from "./CreateBookingArgs";
 import { UpdateBookingArgs } from "./UpdateBookingArgs";
 import { DeleteBookingArgs } from "./DeleteBookingArgs";
+import { Room } from "../../room/base/Room";
 import { User } from "../../user/base/User";
 import { BookingService } from "../booking.service";
 @graphql.Resolver(() => Booking)
@@ -62,6 +63,12 @@ export class BookingResolverBase {
       data: {
         ...args.data,
 
+        room: args.data.room
+          ? {
+              connect: args.data.room,
+            }
+          : undefined,
+
         user: args.data.user
           ? {
               connect: args.data.user,
@@ -80,6 +87,12 @@ export class BookingResolverBase {
         ...args,
         data: {
           ...args.data,
+
+          room: args.data.room
+            ? {
+                connect: args.data.room,
+              }
+            : undefined,
 
           user: args.data.user
             ? {
@@ -112,6 +125,19 @@ export class BookingResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => Room, {
+    nullable: true,
+    name: "room",
+  })
+  async getRoom(@graphql.Parent() parent: Booking): Promise<Room | null> {
+    const result = await this.service.getRoom(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return result;
   }
 
   @graphql.ResolveField(() => User, {

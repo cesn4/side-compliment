@@ -17,6 +17,7 @@ import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
+import { RoomCreateNestedManyWithoutUsersInput } from "./RoomCreateNestedManyWithoutUsersInput";
 
 @InputType()
 class UserCreateInput {
@@ -79,6 +80,18 @@ class UserCreateInput {
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: InputJsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => RoomCreateNestedManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => RoomCreateNestedManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => RoomCreateNestedManyWithoutUsersInput, {
+    nullable: true,
+  })
+  rooms?: RoomCreateNestedManyWithoutUsersInput;
 
   @ApiProperty({
     required: true,

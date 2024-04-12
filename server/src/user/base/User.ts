@@ -17,6 +17,7 @@ import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
+import { Room } from "../../room/base/Room";
 
 @ObjectType()
 class User {
@@ -84,6 +85,15 @@ class User {
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: JsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Room],
+  })
+  @ValidateNested()
+  @Type(() => Room)
+  @IsOptional()
+  rooms?: Array<Room>;
 
   @ApiProperty({
     required: true,

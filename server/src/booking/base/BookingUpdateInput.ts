@@ -11,12 +11,25 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, ValidateNested } from "class-validator";
-import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
+import { RoomWhereUniqueInput } from "../../room/base/RoomWhereUniqueInput";
+import { ValidateNested, IsOptional, IsString } from "class-validator";
 import { Type } from "class-transformer";
+import { UserWhereUniqueInput } from "../../user/base/UserWhereUniqueInput";
 
 @InputType()
 class BookingUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: () => RoomWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => RoomWhereUniqueInput)
+  @IsOptional()
+  @Field(() => RoomWhereUniqueInput, {
+    nullable: true,
+  })
+  room?: RoomWhereUniqueInput | null;
+
   @ApiProperty({
     required: false,
     type: String,

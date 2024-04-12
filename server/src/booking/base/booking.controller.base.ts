@@ -34,6 +34,12 @@ export class BookingControllerBase {
       data: {
         ...data,
 
+        room: data.room
+          ? {
+              connect: data.room,
+            }
+          : undefined,
+
         user: data.user
           ? {
               connect: data.user,
@@ -43,6 +49,13 @@ export class BookingControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        room: {
+          select: {
+            id: true,
+          },
+        },
+
         tItle: true,
         updatedAt: true,
 
@@ -65,6 +78,13 @@ export class BookingControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        room: {
+          select: {
+            id: true,
+          },
+        },
+
         tItle: true,
         updatedAt: true,
 
@@ -88,6 +108,13 @@ export class BookingControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        room: {
+          select: {
+            id: true,
+          },
+        },
+
         tItle: true,
         updatedAt: true,
 
@@ -119,6 +146,12 @@ export class BookingControllerBase {
         data: {
           ...data,
 
+          room: data.room
+            ? {
+                connect: data.room,
+              }
+            : undefined,
+
           user: data.user
             ? {
                 connect: data.user,
@@ -128,6 +161,13 @@ export class BookingControllerBase {
         select: {
           createdAt: true,
           id: true,
+
+          room: {
+            select: {
+              id: true,
+            },
+          },
+
           tItle: true,
           updatedAt: true,
 
@@ -160,6 +200,13 @@ export class BookingControllerBase {
         select: {
           createdAt: true,
           id: true,
+
+          room: {
+            select: {
+              id: true,
+            },
+          },
+
           tItle: true,
           updatedAt: true,
 

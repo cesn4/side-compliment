@@ -1,5 +1,6 @@
 import { BookingUpdateManyWithoutUsersInput } from "./BookingUpdateManyWithoutUsersInput";
 import { InputJsonValue } from "../../types";
+import { RoomUpdateManyWithoutUsersInput } from "./RoomUpdateManyWithoutUsersInput";
 
 export type UserUpdateInput = {
   bookings?: BookingUpdateManyWithoutUsersInput;
@@ -8,5 +9,6 @@ export type UserUpdateInput = {
   lastName?: string | null;
   password?: string;
   roles?: InputJsonValue;
+  rooms?: RoomUpdateManyWithoutUsersInput;
   username?: string;
 };

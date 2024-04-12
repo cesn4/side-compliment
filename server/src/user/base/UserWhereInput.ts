@@ -16,6 +16,7 @@ import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { StringFilter } from "../../util/StringFilter";
+import { RoomListRelationFilter } from "../../room/base/RoomListRelationFilter";
 
 @InputType()
 class UserWhereInput {
@@ -74,6 +75,18 @@ class UserWhereInput {
     nullable: true,
   })
   lastName?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => RoomListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => RoomListRelationFilter)
+  @IsOptional()
+  @Field(() => RoomListRelationFilter, {
+    nullable: true,
+  })
+  rooms?: RoomListRelationFilter;
 
   @ApiProperty({
     required: false,

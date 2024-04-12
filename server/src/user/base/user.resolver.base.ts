@@ -22,6 +22,8 @@ import { UpdateUserArgs } from "./UpdateUserArgs";
 import { DeleteUserArgs } from "./DeleteUserArgs";
 import { BookingFindManyArgs } from "../../booking/base/BookingFindManyArgs";
 import { Booking } from "../../booking/base/Booking";
+import { RoomFindManyArgs } from "../../room/base/RoomFindManyArgs";
+import { Room } from "../../room/base/Room";
 import { UserService } from "../user.service";
 @graphql.Resolver(() => User)
 export class UserResolverBase {
@@ -95,6 +97,20 @@ export class UserResolverBase {
     @graphql.Args() args: BookingFindManyArgs
   ): Promise<Booking[]> {
     const results = await this.service.findBookings(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results;
+  }
+
+  @graphql.ResolveField(() => [Room], { name: "rooms" })
+  async findRooms(
+    @graphql.Parent() parent: User,
+    @graphql.Args() args: RoomFindManyArgs
+  ): Promise<Room[]> {
+    const results = await this.service.findRooms(parent.id, args);
 
     if (!results) {
       return [];
